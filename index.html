@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happiest Birthday Love 💖</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    text-align:center;
+    color:white;
+    overflow:hidden;
+}
+
+/* Background Image */
+.bg{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:url('love.jpg') center/cover no-repeat;
+    filter:brightness(0.6);
+    z-index:-2;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg,#ff758caa,#ff7eb3aa);
+    z-index:-1;
+}
+
+.container{
+    margin-top:10vh;
+    padding:20px;
+}
+
+h1{
+    font-size:2rem;
+    animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px #fff;}
+    to{text-shadow:0 0 25px pink,0 0 40px red;}
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    margin-top:20px;
+    font-size:1rem;
+    cursor:pointer;
+    background:white;
+    color:#ff4e88;
+}
+
+/* Cake */
+.cake{
+    margin:30px auto;
+    width:120px;
+    height:100px;
+    position:relative;
+}
+
+.layer{
+    width:120px;
+    height:40px;
+    background:#ffb6c1;
+    border-radius:10px;
+    position:absolute;
+    bottom:0;
+}
+
+.layer-top{
+    width:100px;
+    height:35px;
+    background:#fff0f5;
+    position:absolute;
+    bottom:40px;
+    left:10px;
+    border-radius:10px;
+}
+
+.candle{
+    width:10px;
+    height:30px;
+    background:#fff;
+    position:absolute;
+    bottom:75px;
+    left:55px;
+}
+
+.flame{
+    width:15px;
+    height:15px;
+    background:orange;
+    border-radius:50%;
+    position:absolute;
+    bottom:105px;
+    left:52px;
+    animation:flicker 0.3s infinite alternate;
+}
+
+@keyframes flicker{
+    from{transform:scale(1);}
+    to{transform:scale(1.2);}
+}
+
+/* Popup */
+.popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:white;
+    color:#ff4e88;
+    padding:25px;
+    border-radius:15px;
+    width:80%;
+    max-width:300px;
+    display:none;
+    z-index:10;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.popup button{
+    margin-top:15px;
+    background:#ff4e88;
+    color:white;
+}
+
+/* Confetti */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+    z-index:5;
+}
+
+/* Mobile */
+@media(max-width:600px){
+    h1{font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<audio autoplay loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+    <h1>💖 Happiest Birthday My Love 💖</h1>
+
+    <div class="cake" id="cake">
+        <div class="layer"></div>
+        <div class="layer-top"></div>
+        <div class="candle"></div>
+        <div class="flame" id="flame"></div>
+    </div>
+
+    <button onclick="cutCake()">Cut the Cake 🎂</button>
+</div>
+
+<!-- Surprise Popup -->
+<div class="popup" id="popup">
+    <h3>💌 Surprise 💌</h3>
+    <p>You are my heart, my happiness, my forever.  
+    I love you more than words can say 🥹💖</p>
+    <button onclick="closePopup()">I Love You 💕</button>
+</div>
+
+<script>
+/* Confetti */
+const canvas=document.getElementById('confetti');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pieces=[];
+
+function randomColor(){
+    const colors=['#ff0','#f0f','#0ff','#ff5733','#33ff57','#3357ff'];
+    return colors[Math.floor(Math.random()*colors.length)];
+}
+
+function createConfetti(){
+    for(let i=0;i<150;i++){
+        pieces.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height-canvas.height,
+            r:Math.random()*6+4,
+            color:randomColor()
+        });
+    }
+}
+
+function drawConfetti(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+        ctx.fillStyle=p.color;
+        ctx.fillRect(p.x,p.y,p.r,p.r);
+        p.y+=2;
+        if(p.y>canvas.height){
+            p.y=-10;
+            p.x=Math.random()*canvas.width;
+        }
+    });
+}
+
+/* Cake Cut */
+function cutCake(){
+    document.getElementById('flame').style.display='none';
+    createConfetti();
+    setInterval(drawConfetti,20);
+    setTimeout(()=>{
+        document.getElementById('popup').style.display='block';
+    },1500);
+}
+
+function closePopup(){
+    document.getElementById('popup').style.display='none';
+}
+</script>
+
+</body>
+</html>
